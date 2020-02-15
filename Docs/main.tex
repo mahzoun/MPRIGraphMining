@@ -1,0 +1,120 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lachaise Assignment
+% LaTeX Template
+% Version 1.0 (26/6/2018)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Marion Lachaise & François Févotte
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{array}
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{MPRI Graph Mining: Find Quasi Cliques}
+
+\author{Mohammad Mahzoun\\ \texttt{Mohammad.Mahzoun@gmail.com}} % Author name and email address
+
+\date{\today} % University, school and/or department name(s) and a date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\section{Introduction} % Unnumbered section
+Our aim in this project is to find $\alpha-quasi-cliques$ with at least $s$ nodes using a given heuristic approach. In this document, the running time of the implementation for different graphs is reported. 
+
+\subsection{Hardware}
+The system we are using to run the code is running a Ubuntu 18.04 operating system with 16GB of memory and Intel COREI7 8th Gen CPU. 
+
+
+\subsection{Implementation} % Numbered section
+The code is publicly available on \href{https://github.com/mahzoun/MPRIGraphMining}{Github}.
+
+%------------------------------------------------
+
+\section{Results}
+In the following, we use different graphs as the input to algorithm. The values $k \in \{2, 3, 4\}$ and $s = 10$ are used for the required parameters. In each section, the results for each graph is described. 
+
+	
+%------------------------------------------------
+
+\subsection{\href{http://konect.uni-koblenz.de/networks/arenas-pgp}{Pretty Good Privacy}}
+This is the interaction network of users of the Pretty Good Privacy (PGP) algorithm. The network contains only the giant connected component of the network. The graph is undirected with $10680$ nodes and $24316$ edges. 
+\begin{center}
+	\begin{tabular}{ | m{1cm} | m{1cm}| m{2cm} | m{1cm} | } 
+		\hline
+		$k$ & $result$ & $time$ & $size$\\ 
+		\hline
+		$2$ & $1$ & $95s$  & $24$\\ 
+		\hline
+		$3$ & $1$ & $98s$  & $24$\\	 
+		\hline
+		$4$ & $1$ & $100s$  & $24$\\
+		\hline
+	\end{tabular}
+\end{center}
+By increasing the value of $k$, the running time increase because the graph is sparse and calculating the $k-degree$ is slower by the increasing of $k$. The result is same because there is a complete sub-graph of order $24$.
+
+\subsection{\href{http://konect.uni-koblenz.de/networks/ca-AstroPh}{Route views}}
+This is the undirected network of autonomous systems of the Internet connected with each other. Nodes are autonomous systems (AS), and edges denote communitation. The network contains loops. The graph is undirected with $6474$ nodes and $13895$ edges. 
+\begin{center}
+	\begin{tabular}{ | m{1cm} | m{1cm}| m{2cm} | m{1cm} | } 
+		\hline
+		$k$ & $result$ & $time$ & $size$\\ 
+		\hline
+		$2$ & $1$ & $25s$  & $10$\\ 
+		\hline
+		$3$ & $1$ & $110s$  & $10$\\	 
+		\hline
+		$4$ & $1$ & $250s$  & $10$\\
+		\hline
+	\end{tabular}
+\end{center}
+By increasing the value of $k$, the running time increase because the graph is sparse and calculating the $k-degree$ is slower by the increasing of $k$. The result is same because there is a complete sub-graph of order $24$.
+
+
+\subsection{\href{http://konect.uni-koblenz.de/networks/opsahl-powergrid}{US power grid}}
+This undirected network contains information about the power grid of the Western States of the United States of America. An edge represents a power supply line. A node is either a generator, a transformator or a substation. The network contains loops. The graph is undirected with $4941$ nodes and $6594$ edges. 
+\begin{center}
+	\begin{tabular}{ | m{1cm} | m{1cm}| m{2cm} | m{1cm} | } 
+		\hline
+		$k$ & $result$ & $time$ & $size$\\ 
+		\hline
+		$2$ & $0.6$ & $10s$  & $10$\\ 
+		\hline
+		$3$ & $0.57$ & $20s$  & $10$\\	 
+		\hline
+		$4$ & $0.55$ & $28s$  & $10$\\
+		\hline
+	\end{tabular}
+\end{center}
+By increasing the value of $k$, the running time increase because the graph is sparse and calculating the $k-degree$ is slower by the increasing of $k$. The result is different because the order of nodes in deleting has been changed.
+
+
+\section{Improvement}
+The bottleneck of the algorithm is listing all $k-cliques$. Minor implementation tunings will result in better performance. However, for small values of $k$, we may do better. For $k == 2$, we may just use the degree of each vertex which is faster. 
+\end{document}

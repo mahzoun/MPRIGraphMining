@@ -5,34 +5,30 @@
 #include <fstream>
 #include <iomanip>
 #include <map>
+#include <chrono>
 using namespace std;
-const int MAXN = 1e6; //max possible |V(G)|
+const int MAXN = 1e5; //max possible |V(G)|
 long long V, E; // size of input graph
-vector<int> G[MAXN], G_help[MAXN], D[MAXN]; //input graph D is directed graph
-int mio[MAXN], degree[MAXN];
-map <pair<int,int>, bool> is_neigh;
+vector<int> G[MAXN], D[MAXN]; //input graph D is directed graph
+set<int> C, I;
+int degree[MAXN];
 int k, s;
-bool removed[MAXN];
-bool graph_degree_comp(vector<int> i ,vector<int> j) { return ( i.size() > j.size() ); }
-
+long double alpha = 0;
+int ans_size = V;
 void input_graph()
 {
-    ifstream fin("dolphins.in");
+    ifstream fin("route.in");
     fin >> k >> s;
     fin >> V >> E;
     int tmp_size = E;
-    for(int i = 0; i < V; i++)
-        G[i].push_back(i);
     while(tmp_size--){
         int u, v;
         fin >> u >> v;
         u--;--v;
         G[u].push_back(v);
         G[v].push_back(u);
-        G_help[u].push_back(v);
-        G_help[v].push_back(u);
-
     }
+    fin.close();
 }
 
 void print_graph(vector<int> G[], int size)
@@ -46,27 +42,55 @@ void print_graph(vector<int> G[], int size)
 
 }
 
-void core_ordering(vector<int> G[])
-{
-    for(int i = 0; i < V; i++){
-        mio[i] = G[i].size();
-    }
-}
-
-
-void create_Dgraph(vector<int> G[], set<int> indices)//TODO fix this, it creates Dgraph for the whole graph
+void create_Dgraph()//TODO fix this, it creates Dgraph for the whole graph
 {
     for(int i = 0 ; i < V ; i++)
         D[i].clear();
-    for(int i: indices){
+    long long cur_E = 0;
+    for(int i: I){
         for(int j = 0; j < G[i].size(); j++){
-            if(mio[i] < mio[G[i][j]])
+            if(G[i].size() > G[G[i][j]].size())
                 D[i].push_back(G[i][j]);
+            else if(G[i].size() == G[G[i][j]].size())
+                if(i > G[i][j])
+                    D[i].push_back(G[i][j]);
         }
+        cur_E += D[i].size();
+    }
+//    cout << "\n***********************\n";
+//    cout << cur_E << " " << I.size() << endl;
+//    cout << "\n***********************\n";
+    long double cur_alpha = 2 * (double)cur_E / (I.size() * (I.size() - 1));
+    if(cur_alpha > alpha && I.size() >= s) {
+        alpha = cur_alpha;
+        ans_size = I.size();
     }
 }
 
-void listing(int k, set<int> indices, set<int> C)
+int find_node_with_min_degree()
+{
+    int min_deg = 0, min_val = V + 1;
+    for(int i:I)
+        if(degree[i] < min_val){
+            min_val = degree[i];
+            min_deg = i;
+        }
+    return min_deg;
+}
+
+void remove_node(int u)
+{
+    for(int i = 0; i < G[u].size(); i++) {
+        int v = G[u][i];
+        auto uu = find(G[v].begin(), G[v].end(), u);
+        if ( uu != G[v].end())
+            G[v].erase(uu);
+    }
+    G[u].clear();
+    I.erase(u);
+}
+
+void listing(int k, set<int> indices)
 {
     if( k == 2){
         for(int i : indices)
@@ -88,7 +112,7 @@ void listing(int k, set<int> indices, set<int> C)
                     new_indices.insert(nbr);
             }
             C.insert(i);
-            listing(k - 1, new_indices, C);
+            listing(k - 1, new_indices);
             C.erase(i);
         }
     }
@@ -97,53 +121,28 @@ void listing(int k, set<int> indices, set<int> C)
 int main()
 {
     ios_base::sync_with_stdio(false);
+//    cout << "\n***********************\n";
     input_graph();
     int graph_size = V;
-    set<int> I;
-    long double alpha = E * 2 / (V * (V - 1));
     for(int i = 0; i < V; i++) {
         I.insert(i);
     }
-    set<int> C;
-    core_ordering(G_help);
-    while(graph_size > s) {
+    auto t1 = std::chrono::high_resolution_clock::now();
+    while(I.size() >= s ) {
+        create_Dgraph();
+        listing(k, I);
+        int min_deg = find_node_with_min_degree();
+//        cout << "\n _______________________________ \n";
+//        cout << "\n before:  " << min_deg << endl;
+//        print_graph(G, V);
+        remove_node(min_deg);
+//        cout << "\n after:  " << min_deg << endl;
+//        print_graph(G, V);
         for(int i = 0; i < V; i++)
             degree[i] = 0;
-        create_Dgraph(G_help, I);
-        listing(k, I, C);
-//        for(int i = 0 ; i < V; i++)
-//            cout<<degree[i] << " ";
-//        cout << endl;
-//        print_graph(G_help, V);
-        int min_deg = 0, min_val = V + 1;
-        for(int i:I)
-            if(removed[i] == 0 & degree[i] < min_val){
-                min_val = degree[i];
-                min_deg = i;
-        }
-        I.erase(min_deg);
-        removed[min_deg] = 1;
-        //remove node with min_deg and calculate alpha
-        cout << "before earse node " << min_deg << " " << degree[min_deg] << endl;
-//        print_graph(G_help, V);
-        for(int i = 0; i < G_help[min_deg].size(); i++){
-            int nbr = G_help[min_deg][i];
-            G_help[nbr].erase(find(G_help[nbr].begin(), G_help[nbr].end(), min_deg));
-        }
-        G_help[min_deg].erase(G_help[min_deg].begin(), G_help[min_deg].end());
-//        cout << "after earse node " << min_deg << endl;
-//        print_graph(G_help, V);
-        graph_size--;
-        long long cur_E = 0;
-        for(int i : I)
-            cur_E += G_help[i].size();
-        cout << cur_E << " " << graph_size << endl;
-        long double cur_alpha = (double)cur_E / (graph_size * (graph_size - 1));
-        if(cur_alpha > alpha) {
-            cout << endl << "------>" << cur_alpha << endl;
-            print_graph(G_help, V);
-            alpha = cur_alpha;
-        }
     }
-    cout << fixed << setprecision(10) << alpha << endl;
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>( t2 - t1 ).count();
+
+    cout << "Time: " << duration << "\nValue: " << fixed << setprecision(10) << alpha << "\nGraph Size: " << ans_size << endl;
 }
