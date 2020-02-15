@@ -12,17 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02b1b3e0-74db-41ca-82f5-f0c0d6154194" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pgp.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/route.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/astro.in" beforeDir="false" afterPath="$PROJECT_DIR$/astro.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/MPRIGraphMining.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/MPRIGraphMining.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/MPRIGraphMining.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/MPRIGraphMining.dir/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/MPRIGraphMining" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/MPRIGraphMining" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/astro.in" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/astro.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +63,7 @@
       <updated>1581169069335</updated>
       <workItem from="1581169073275" duration="15571000" />
       <workItem from="1581193703981" duration="42761000" />
-      <workItem from="1581592890605" duration="38189000" />
+      <workItem from="1581592890605" duration="38593000" />
     </task>
     <servers />
   </component>
