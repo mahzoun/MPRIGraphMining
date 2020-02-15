@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sauron/CLionProjects/MPRIGraphMining/main.cpp
+set
+-
+vector
+-
+algorithm
+-
+iostream
+-
+fstream
+-
+iomanip
+-
+
